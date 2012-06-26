@@ -41,6 +41,7 @@ set shortmess=atI           "Shorten messages to avoid 'press ENTER' prompts
 set noerrorbells            "Don't make noises
 syntax on                   "Syntax highlighting
 
+set title                   "Show title in console title
 " */
 
 " /* Text, Tab & Indent
@@ -73,10 +74,15 @@ set showmatch               "Show matching brackets
 set nohlsearch              "Don't highlight search results
 set incsearch               "Highlight matches while searching
 set novisualbell            "Don't do the blinking thing
+set clipboard=unnamed       "Use system clipboard
 
 " */  
 
-" /* Folding
+" /* Mappings
+ 
+" Moving tab using CTRL+ the arrows
+map <C-right> gt<CR>
+map <C-left> gT<CR>
 
 "Toggle folds with <Space> (Normal Mode)
 nnoremap <silent> <Space> @=(foldlevel('.')?'za':"\<Space>")<CR>
