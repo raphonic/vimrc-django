@@ -20,7 +20,8 @@ Bundle 'scrooloose/nerdtree'
 Bundle 'jistr/vim-nerdtree-tabs'
 
 " Color scheme
-Bundle 'cschlueter/vim-mustang'
+" Bundle 'cschlueter/vim-mustang'
+Bundle 'sickill/vim-monokai'
 
 " Code Completion
 Bundle 'ervandew/supertab'
@@ -29,7 +30,8 @@ Bundle 'ervandew/supertab'
 Bundle 'nvie/vim-flake8'
 Bundle 'vim-scripts/indentpython.vim'
 
-filetype plugin indent on
+filetype plugin on
+filetype indent on
 " */ 
 
 " /*  General
@@ -85,7 +87,7 @@ set list                    "Show whitespace
 
 "Set how whitespace is displayed
 "set listchars=tab:>.,trail:.,extends:#,nbsp:.
-set listchars=tab:ᗒ.,eol:ᨀ
+set listchars=tab:ᗒ.,eol:\
 
 " /* NERDTree
 
@@ -105,16 +107,16 @@ let g:nerdtree_tabs_open_on_console_startup=1
  
 
 " When I'm trying to learn to use vim properly
-map <left> <nop>
-map <right> <nop>
-map <up> <nop>
-map <down> <nop>
+"map <left> <nop>
+"map <right> <nop>
+"map <up> <nop>
+"map <down> <nop>
 
 "The rest of the time
-map <left> h
-map <right> l
-map <up> k
-map <down> j
+"map <left> h
+"map <right> l
+"map <up> k
+"map <down> j
 
 " Move between windows with shift + direction
 map <S-l> <C-w>l
@@ -123,8 +125,8 @@ map <S-k> <C-w>k
 map <S-j> <C-w>j
 
 
-map <C-right> gT
-map <C-left> gt
+map <C-right> gt
+map <C-left> gT
 map <C-S-right> :call MoveCurTab(1)<CR>
 map <C-S-left> :call MoveCurTab(-1)<CR>
 map <silent> ,/ :nohlsearch<CR>
@@ -142,17 +144,18 @@ vnoremap <Space> zf
 set t_Co=256                "Set console to display 256 colors                
 
 "Hide warnings about colorscheme not being found on first run
-silent! colorscheme mustang
+silent! colorscheme Monokai
 
 " */
 
 " /* Filetype Specific
 
-    "Highlight whitespace differently for html,xml
-    autocmd filetype html,xml set listchars-=tab:>.
+"Highlight whitespace differently for html,xml
+autocmd FileType html setlocal listchars-=tab:>.
 
-    "Use real tabs in html,js and css files (Work convention)
-    autocmd filetype html,css,js set noexpandtab
+"Use real tabs in html,js and css files (Work convention)
+autocmd BufEnter * set et 
+autocmd BufEnter *.html,*.js set noet
 
 " */
 
