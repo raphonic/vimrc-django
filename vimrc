@@ -20,15 +20,19 @@ Bundle 'scrooloose/nerdtree'
 Bundle 'jistr/vim-nerdtree-tabs'
 
 " Color scheme
-Bundle 'vim-scripts/wombat256.vim'
 Bundle 'vim-scripts/Lucius'
 
-" Code Completion
+Bundle 'scrooloose/nerdcommenter'
+
+" Completion
 Bundle 'ervandew/supertab'
 
 " Python utilities
 Bundle 'nvie/vim-flake8'
 Bundle 'vim-scripts/indentpython.vim'
+Bundle 'scrooloose/syntastic.git'
+Bundle 'zeekay/vim-powerline-hax'
+Bundle 'Lokaltog/vim-powerline'
 
 filetype plugin on
 filetype indent on
@@ -94,14 +98,11 @@ set listchars=tab:ᗒ.,eol:\
 let NERDTreeIgnore=['\~$','.pyc$']
 let NERDTreeChDirMode=2
 let NERDTreeMouseMode=2
-let NERDTreeWinPos='right'
 let NERDTreeMinimalUI=1
 let NERDTreeWinSize=31
 let g:nerdtree_tabs_open_on_console_startup=1
 
 " */
-
-" */  
 
 " /* Mappings
  
@@ -144,12 +145,13 @@ vnoremap <Space> zf
 set t_Co=256                "Set console to display 256 colors                
 
 "Hide warnings about colorscheme not being found on first run
-" silent! colorscheme Monokai
 silent! colorscheme lucius
 
 " */
 
 " /* Filetype Specific
+
+au BufNewFile,BufRead *.html setlocal filetype=htmldjango
 
 "Highlight whitespace differently for html,xml
 autocmd FileType html setlocal listchars-=tab:>.
@@ -157,6 +159,13 @@ autocmd FileType html setlocal listchars-=tab:>.
 "Use real tabs in html,js and css files (Work convention)
 autocmd BufEnter * set et 
 autocmd BufEnter *.html,*.js set noet
+
+au BufNewFile,BufRead admin.py     setlocal filetype=python.django
+au BufNewFile,BufRead urls.py      setlocal filetype=python.django
+au BufNewFile,BufRead models.py    setlocal filetype=python.django
+au BufNewFile,BufRead views.py     setlocal filetype=python.django
+au BufNewFile,BufRead settings.py  setlocal filetype=python.django
+au BufNewFile,BufRead forms.py     setlocal filetype=python.django
 
 " */
 
