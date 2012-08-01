@@ -91,7 +91,7 @@ set list                    "Show whitespace
 
 "Set how whitespace is displayed
 "set listchars=tab:>.,trail:.,extends:#,nbsp:.
-set listchars=tab:ᗒ.,eol:\
+set listchars=tab:᚛-,eol:ᚌ
 
 " /* NERDTree
 
@@ -101,6 +101,8 @@ let NERDTreeMouseMode=2
 let NERDTreeMinimalUI=1
 let NERDTreeWinSize=31
 let g:nerdtree_tabs_open_on_console_startup=1
+
+let g:flake8_ignore="E501"
 
 " */
 
@@ -114,16 +116,20 @@ let g:nerdtree_tabs_open_on_console_startup=1
 "map <down> <nop>
 
 "The rest of the time
-"map <left> h
-"map <right> l
-"map <up> k
-"map <down> j
+map <left> h
+map <right> l
+map <up> k
+map <down> j
 
 " Move between windows with shift + direction
 map <S-l> <C-w>l
 map <S-h> <C-w>h
 map <S-k> <C-w>k
 map <S-j> <C-w>j
+map <S-right> <C-w>l
+map <S-left> <C-w>h
+map <S-up> <C-w>k
+map <S-down> <C-w>j
 
 
 map <C-right> gt
@@ -140,7 +146,7 @@ vnoremap <Space> zf
 
 " */
 
-" /* Colors and fonts
+" /* Colors and fonts 
 
 set t_Co=256                "Set console to display 256 colors                
 
