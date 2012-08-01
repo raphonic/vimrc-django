@@ -20,9 +20,7 @@ Bundle 'scrooloose/nerdtree'
 Bundle 'jistr/vim-nerdtree-tabs'
 
 " Color scheme
-" Bundle 'cschlueter/vim-mustang'
-Bundle 'sickill/vim-monokai'
-Bundle 'wgibbs/vim-irblack'
+Bundle 'vim-scripts/Lucius'
 
 " Code Completion
 Bundle 'ervandew/supertab'
@@ -152,7 +150,7 @@ vnoremap <Space> zf
 set t_Co=256                "Set console to display 256 colors                
 
 "Hide warnings about colorscheme not being found on first run
-silent! colorscheme ir_black
+silent! colorscheme lucius
 
 " */
 
