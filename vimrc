@@ -93,6 +93,8 @@ set list                    "Show whitespace
 "set listchars=tab:>.,trail:.,extends:#,nbsp:.
 set listchars=tab:᚛-,eol:ᚌ
 
+" */
+
 " /* NERDTree
 
 let NERDTreeIgnore=['\~$','.pyc$']
@@ -100,7 +102,7 @@ let NERDTreeChDirMode=2
 let NERDTreeMouseMode=2
 let NERDTreeMinimalUI=1
 let NERDTreeWinSize=31
-let g:nerdtree_tabs_open_on_console_startup=1
+let g:nerdtree_tabs_open_on_console_startup=0
 
 let g:flake8_ignore="E501"
 
@@ -138,11 +140,15 @@ map <C-S-right> :call MoveCurTab(1)<CR>
 map <C-S-left> :call MoveCurTab(-1)<CR>
 map <silent> ,/ :nohlsearch<CR>
 
+map t :NERDTreeTabsToggle<CR>
+
 "Toggle folds with <Space> (Normal Mode)
 nnoremap <silent> <Space> @=(foldlevel('.')?'za':"\<Space>")<CR>
 
 "Create folds with <Space> (Visual Mode)
 vnoremap <Space> zf    
+
+map <C-\> :tab split<CR>:exec("tag ".expand("<cword>"))<CR>
 
 " */
 
@@ -172,6 +178,8 @@ au BufNewFile,BufRead models.py    setlocal filetype=python.django
 au BufNewFile,BufRead views.py     setlocal filetype=python.django
 au BufNewFile,BufRead settings.py  setlocal filetype=python.django
 au BufNewFile,BufRead forms.py     setlocal filetype=python.django
+
+let g:syntastic_python_checker_args='--ignore=E501'
 
 " */
 
@@ -222,5 +230,25 @@ if !exists("*MoveCurTab")
       exe 'tabmove '.move_to
     endfunction
 endif
+
+" Generate ctags if a django project is detected
+function! GenerateDjangoCTags()
+    let DJANGO_ROOT_DIR = findfile('django-admin', '.;$HOME')
+    if !filereadable(DJANGO_ROOT_DIR)
+        let DJANGO_ROOT_DIR = findfile('manage.py', '.;$HOME')
+    endif
+    let DJANGO_ROOT_DIR = findfile('manage.py', '.;$HOME')
+    if filereadable(DJANGO_ROOT_DIR)
+        let DJANGO_ROOT_DIR = substitute(DJANGO_ROOT_DIR, "/[^/]*$", "", "")
+        if !filereadable(DJANGO_ROOT_DIR . "/tags")
+            exe "cd " . DJANGO_ROOT_DIR
+            silent! exec "r!ctags --python-kinds=-i -R 2> /dev/null"
+        endif
+    endif
+endfunction
+
+" Generate ctags
+call GenerateDjangoCTags()
+set tags=tags;/
 
 " */
