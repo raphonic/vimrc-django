@@ -22,7 +22,9 @@ Bundle 'jistr/vim-nerdtree-tabs'
 " Color scheme
 Bundle 'vim-scripts/Lucius'
 
-" Code Completion
+Bundle 'scrooloose/nerdcommenter'
+
+" Completion
 Bundle 'ervandew/supertab'
 Bundle 'scrooloose/syntastic'
 
@@ -32,7 +34,9 @@ Bundle 'Lokaltog/vim-powerline'
 
 " Python utilities
 Bundle 'vim-scripts/indentpython.vim'
-" Bundle 'hattya/python_fold.vim'
+Bundle 'scrooloose/syntastic.git'
+Bundle 'zeekay/vim-powerline-hax'
+Bundle 'Lokaltog/vim-powerline'
 
 filetype plugin on
 filetype indent on
@@ -93,21 +97,20 @@ set list                    "Show whitespace
 "set listchars=tab:>.,trail:.,extends:#,nbsp:.
 set listchars=tab:᚛-,eol:ᚌ
 
+" */
+
 " /* NERDTree
 
 let NERDTreeIgnore=['\~$','.pyc$']
 let NERDTreeChDirMode=2
 let NERDTreeMouseMode=2
-let NERDTreeWinPos='left'
 let NERDTreeMinimalUI=1
 let NERDTreeWinSize=31
-let g:nerdtree_tabs_open_on_console_startup=1
+let g:nerdtree_tabs_open_on_console_startup=0
 
 let g:flake8_ignore="E501"
 
 " */
-
-" */  
 
 " /* Mappings
  
@@ -141,11 +144,15 @@ map <C-S-right> :call MoveCurTab(1)<CR>
 map <C-S-left> :call MoveCurTab(-1)<CR>
 map <silent> ,/ :nohlsearch<CR>
 
+map t :NERDTreeTabsToggle<CR>
+
 "Toggle folds with <Space> (Normal Mode)
 nnoremap <silent> <Space> @=(foldlevel('.')?'za':"\<Space>")<CR>
 
 "Create folds with <Space> (Visual Mode)
 vnoremap <Space> zf    
+
+map <C-\> :tab split<CR>:exec("tag ".expand("<cword>"))<CR>
 
 " */
 
@@ -160,6 +167,8 @@ silent! colorscheme lucius
 
 " /* Filetype Specific
 
+au BufNewFile,BufRead *.html setlocal filetype=htmldjango
+
 "Highlight whitespace differently for html,xml
 autocmd FileType html setlocal listchars-=tab:>.
 
@@ -167,6 +176,14 @@ autocmd FileType html setlocal listchars-=tab:>.
 autocmd BufEnter * set et 
 autocmd BufEnter *.html,*.js set noet
 
+au BufNewFile,BufRead admin.py     setlocal filetype=python.django
+au BufNewFile,BufRead urls.py      setlocal filetype=python.django
+au BufNewFile,BufRead models.py    setlocal filetype=python.django
+au BufNewFile,BufRead views.py     setlocal filetype=python.django
+au BufNewFile,BufRead settings.py  setlocal filetype=python.django
+au BufNewFile,BufRead forms.py     setlocal filetype=python.django
+
+let g:syntastic_python_checker_args='--ignore=E501'
 " */
 
 " /* Autocompletion
@@ -216,5 +233,24 @@ if !exists("*MoveCurTab")
       exe 'tabmove '.move_to
     endfunction
 endif
+
+" Generate ctags if a django project is detected
+function! GenerateDjangoCTags()
+    let DJANGO_ROOT_DIR = findfile('django-admin', '.;$HOME')
+    if DJANGO_ROOT_DIR == ""
+        let DJANGO_ROOT_DIR = findfile('manage.py', '.;$HOME')
+    endif
+    if DJANGO_ROOT_DIR != ""
+        let DJANGO_ROOT_DIR = substitute(DJANGO_ROOT_DIR, "/[^/]*$", "", "")
+        if !filereadable(DJANGO_ROOT_DIR . "/tags")
+            exe "cd " . DJANGO_ROOT_DIR
+            silent! exec "r!ctags --python-kinds=-i -R 2> /dev/null"
+        endif
+    endif
+endfunction
+
+" Generate ctags
+call GenerateDjangoCTags()
+set tags=tags;/
 
 " */
