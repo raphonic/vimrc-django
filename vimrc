@@ -24,9 +24,13 @@ Bundle 'vim-scripts/Lucius'
 
 " Code Completion
 Bundle 'ervandew/supertab'
+Bundle 'scrooloose/syntastic'
+
+" Interface
+Bundle 'zeekay/vim-powerline-custom'
+Bundle 'Lokaltog/vim-powerline'
 
 " Python utilities
-Bundle 'nvie/vim-flake8'
 Bundle 'vim-scripts/indentpython.vim'
 " Bundle 'hattya/python_fold.vim'
 
@@ -162,8 +166,6 @@ autocmd FileType html setlocal listchars-=tab:>.
 "Use real tabs in html,js and css files (Work convention)
 autocmd BufEnter * set et 
 autocmd BufEnter *.html,*.js set noet
-
-autocmd BufWritePost *.py call Flake8()
 
 " */
 
