@@ -20,7 +20,7 @@ Bundle 'scrooloose/nerdtree'
 Bundle 'jistr/vim-nerdtree-tabs'
 
 " Color scheme
-Bundle 'vim-scripts/Lucius'
+Bundle 'chriskempson/vim-tomorrow-theme'
 
 Bundle 'scrooloose/nerdcommenter'
 
@@ -157,7 +157,7 @@ map <C-\> :tab split<CR>:exec("tag ".expand("<cword>"))<CR>
 set t_Co=256                "Set console to display 256 colors                
 
 "Hide warnings about colorscheme not being found on first run
-silent! colorscheme lucius
+silent! colorscheme Tomorrow-Night
 
 " */
 
@@ -169,8 +169,6 @@ au BufNewFile,BufRead *.html setlocal filetype=htmldjango
 autocmd FileType html setlocal listchars-=tab:>.
 
 "Use real tabs in html,js and css files (Work convention)
-autocmd BufEnter * set et 
-autocmd BufEnter *.html,*.js set noet
 
 au BufNewFile,BufRead admin.py     setlocal filetype=python.django
 au BufNewFile,BufRead urls.py      setlocal filetype=python.django
@@ -178,6 +176,9 @@ au BufNewFile,BufRead models.py    setlocal filetype=python.django
 au BufNewFile,BufRead views.py     setlocal filetype=python.django
 au BufNewFile,BufRead settings.py  setlocal filetype=python.django
 au BufNewFile,BufRead forms.py     setlocal filetype=python.django
+
+autocmd FileType javascript,html,css set noet
+autocmd FileType python set et
 
 let g:syntastic_python_checker_args='--ignore=E501'
 
