@@ -26,9 +26,13 @@ Bundle 'scrooloose/nerdcommenter'
 
 " Completion
 Bundle 'ervandew/supertab'
+Bundle 'scrooloose/syntastic'
+
+" Interface
+Bundle 'zeekay/vim-powerline-custom'
+Bundle 'Lokaltog/vim-powerline'
 
 " Python utilities
-Bundle 'nvie/vim-flake8'
 Bundle 'vim-scripts/indentpython.vim'
 Bundle 'scrooloose/syntastic.git'
 Bundle 'zeekay/vim-powerline-hax'
@@ -181,7 +185,6 @@ autocmd FileType javascript,html,css set noet
 autocmd FileType python set et
 
 let g:syntastic_python_checker_args='--ignore=E501'
-
 " */
 
 " /* Autocompletion
@@ -235,11 +238,10 @@ endif
 " Generate ctags if a django project is detected
 function! GenerateDjangoCTags()
     let DJANGO_ROOT_DIR = findfile('django-admin', '.;$HOME')
-    if !filereadable(DJANGO_ROOT_DIR)
+    if DJANGO_ROOT_DIR == ""
         let DJANGO_ROOT_DIR = findfile('manage.py', '.;$HOME')
     endif
-    let DJANGO_ROOT_DIR = findfile('manage.py', '.;$HOME')
-    if filereadable(DJANGO_ROOT_DIR)
+    if DJANGO_ROOT_DIR != ""
         let DJANGO_ROOT_DIR = substitute(DJANGO_ROOT_DIR, "/[^/]*$", "", "")
         if !filereadable(DJANGO_ROOT_DIR . "/tags")
             exe "cd " . DJANGO_ROOT_DIR
