@@ -29,14 +29,12 @@ Bundle 'ervandew/supertab'
 Bundle 'scrooloose/syntastic'
 
 " Interface
-Bundle 'zeekay/vim-powerline-custom'
+Bundle 'zeekay/vim-powerline-hax'
 Bundle 'Lokaltog/vim-powerline'
 
 " Python utilities
 Bundle 'vim-scripts/indentpython.vim'
 Bundle 'scrooloose/syntastic.git'
-Bundle 'zeekay/vim-powerline-hax'
-Bundle 'Lokaltog/vim-powerline'
 
 filetype plugin on
 filetype indent on
@@ -89,6 +87,7 @@ set whichwrap+=<,>,[,],h,l  "Allow cursor keys to cross line boundaries
 set showmatch               "Show matching brackets
 set incsearch               "Highlight matches while searching
 set hlsearch                "Highlight search results
+set smartcase
 set novisualbell            "Don't do the blinking thing
 set clipboard=unnamed       "Use system clipboard
 set list                    "Show whitespace
@@ -144,7 +143,7 @@ map <C-S-right> :call MoveCurTab(1)<CR>
 map <C-S-left> :call MoveCurTab(-1)<CR>
 map <silent> ,/ :nohlsearch<CR>
 
-map t :NERDTreeTabsToggle<CR>
+map <Leader>t :NERDTreeTabsToggle<CR>
 
 "Toggle folds with <Space> (Normal Mode)
 nnoremap <silent> <Space> @=(foldlevel('.')?'za':"\<Space>")<CR>
