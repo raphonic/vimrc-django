@@ -1,38 +1,44 @@
 vimrc-django
 ============
 Vim config for Django Web Development.
+Used on Arch Linux with console vim.
 
 installation
 ============
-Automated. Copy vimrc to ~/.vimrc and run vim ~/.vimrc.
+Partly automated. Copy/symlink vimrc to `~/.vimrc` and run `vim ~/.vimrc`.
 
-Only tested on Arch Linux with console vim.
+For ctags generation create a `~/.indexer_files` with the following:
+```
+[PROJECTS_PARENT]
+option:ctags_params = "--python-kinds=-i"
 
-Bundles are checked for updates everytime the vimrc is edited.
+~/Workspace
+```
 
 requirements
 ============
 vim with python support (in Arch install gvim package to get full featured vim)
 
-flake8
-
-git
-
-python
+External checkers for every filetype you want syntastic to handle, e.g. jslint, flake8
 
 plugins
 =======
-Vundle          https://github.com/gmarik/vundle                Plugin Manager
+Vundle           https://github.com/gmarik/vundle                    Plugin Manager
 
-NerdTree        https://github.com/scrooloose/nerdtree          Filesystem Explorer
+NerdTree         https://github.com/scrooloose/nerdtree              Filesystem Explorer
 
-NerdTreeTabs    https://github.com/jistr/vim-nerdtree-tabs      NerdTree with tabs
+NerdTreeTabs     https://github.com/jistr/vim-nerdtree-tabs          NerdTree with tabs
 
-Mustang         https://github.com/cschlueter/vim-mustang       Colorscheme
+Tommorow-Dark    https://github.com/chriskempson/vim-tomorrow-theme  Colorscheme
 
-SuperTab        https://github.com/ervandew/supertab            <Tab> completion
+NerdCommenter    https://github.com/scrooloose/nerdcommenter         Code commenting
 
-Vim-Flake8      https://github.com/nvie/vim-flake8              Python Syntax/Style checker
+Syntastic        https://github.com/scrooloose/syntastic             Syntax checking
 
-IndentPython    https://github.com/vim-scripts/indentpython.vim Pep8 Indentation
+Powerline        https://github.com/Lokaltog/vim-powerline           Prettier status line
 
+Powerline Hax    https://github.com/zeekay/vim-powerline-hax         Fixes the issue I was having with Syntastic and Powerline
+
+IndentPython     https://github.com/vim-scripts/indentpython.vim     Pep8 Indentation
+
+CTags Generation https://github.com/vim-scripts/indexer.tar.gz      Automatic CTag generation and update

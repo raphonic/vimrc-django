@@ -1,12 +1,21 @@
 set nocompatible            "Behave less like vi
 
-" Install plugin manager
+" Vundle /*
 if !isdirectory(expand("~/.vim/bundle/vundle/"))
     silent !git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
-endif
 
-" /* Vundle Plugins
-autocmd! BufRead ~/.vimrc call Setup()
+    " Reload vimrc
+    source ~/.vimrc
+
+    " Directory required for persistent undo history
+    if !isdirectory(expand("~/.vim/undodir/"))
+        silent !mkdir ~/.vim/undodir/
+    endif
+
+    " Install/Update plugins
+    BundleInstall!
+    source ~/.vimrc
+endif
 
 filetype off
 set rtp+=~/.vim/bundle/vundle/
@@ -22,28 +31,52 @@ Bundle 'jistr/vim-nerdtree-tabs'
 " Color scheme
 Bundle 'chriskempson/vim-tomorrow-theme'
 
+" Commenting
 Bundle 'scrooloose/nerdcommenter'
 
-" Completion
-Bundle 'ervandew/supertab'
+" Syntax checking
 Bundle 'scrooloose/syntastic'
 
-" Interface
+" Status line
 Bundle 'zeekay/vim-powerline-hax'
 Bundle 'Lokaltog/vim-powerline'
 
-" Python utilities
+" Smart python indentation
 Bundle 'vim-scripts/indentpython.vim'
-Bundle 'scrooloose/syntastic.git'
+
+" Automatic ctags generation
+Bundle 'vim-scripts/DfrankUtil'
+Bundle 'vim-scripts/vimprj'
+Bundle 'vim-scripts/indexer.tar.gz'
 
 filetype plugin on
 filetype indent on
-" */ 
+
+" */
+
+" /* Plugin settings
+
+let NERDTreeIgnore=['\~$','.pyc$']
+let NERDTreeChDirMode=2
+let NERDTreeMouseMode=2
+let NERDTreeMinimalUI=1
+let NERDTreeWinSize=31
+let g:nerdtree_tabs_open_on_console_startup=0
+
+let g:flake8_ignore="E501"
+    
+let g:indexer_disableCtagsWarning=1
+
+" */
 
 " /*  General
 
-setlocal foldmarker=/*,*/   "/* and */ mark boundary of a foldable section
-setlocal foldmethod=marker  "Fold this vimrc into sections
+autocmd BufEnter ~/.vimrc set foldmarker=/*,*/   "Foldable section boundaries
+autocmd BufEnter ~/.vimrc set foldmethod=marker  "Fold this vimrc into sections
+autocmd BufLeave ~/.vimrc set foldmethod=manual  "Switch back to manual folding everywhere else
+set foldmethod=manual
+
+set textwidth=0             "Never wrap
 set lazyredraw              "Don't redraw while running macros
 set shortmess=atI           "Shorten messages to avoid 'press ENTER' prompts
 set noerrorbells            "Don't make noises
@@ -54,6 +87,10 @@ set title                   "Show title in console title
 set nobackup                "Don't backup
 set noswapfile              "Don't make swap files
 
+let mapleader = ","
+let g:mapleader = ","
+
+set laststatus=2            " Always display a status line
 " */
 
 " /* Text, Tab & Indent
@@ -89,25 +126,12 @@ set incsearch               "Highlight matches while searching
 set hlsearch                "Highlight search results
 set smartcase
 set novisualbell            "Don't do the blinking thing
-set clipboard=unnamed       "Use system clipboard
+set clipboard=unnamedplus   "Use system clipboard
 set list                    "Show whitespace
 
 "Set how whitespace is displayed
 "set listchars=tab:>.,trail:.,extends:#,nbsp:.
 set listchars=tab:᚛-,eol:ᚌ
-
-" */
-
-" /* NERDTree
-
-let NERDTreeIgnore=['\~$','.pyc$']
-let NERDTreeChDirMode=2
-let NERDTreeMouseMode=2
-let NERDTreeMinimalUI=1
-let NERDTreeWinSize=31
-let g:nerdtree_tabs_open_on_console_startup=0
-
-let g:flake8_ignore="E501"
 
 " */
 
@@ -139,11 +163,11 @@ map <S-down> <C-w>j
 
 map <C-right> gt
 map <C-left> gT
-map <C-S-right> :call MoveCurTab(1)<CR>
-map <C-S-left> :call MoveCurTab(-1)<CR>
-map <silent> ,/ :nohlsearch<CR>
+map <silent> <C-S-right> :call MoveCurTab(1)<CR>
+map <silent> <C-S-left> :call MoveCurTab(-1)<CR>
+map <silent> <leader>/ :nohlsearch<CR>
 
-map <Leader>t :NERDTreeTabsToggle<CR>
+map \ :NERDTreeTabsToggle<CR>
 
 "Toggle folds with <Space> (Normal Mode)
 nnoremap <silent> <Space> @=(foldlevel('.')?'za':"\<Space>")<CR>
@@ -151,6 +175,12 @@ nnoremap <silent> <Space> @=(foldlevel('.')?'za':"\<Space>")<CR>
 "Create folds with <Space> (Visual Mode)
 vnoremap <Space> zf    
 
+"Visual commenting
+set notildeop
+vmap # <leader>c<space>
+
+"Open tag in new window
+":TODO: Do this only when a match is found
 map <C-\> :tab split<CR>:exec("tag ".expand("<cword>"))<CR>
 
 " */
@@ -161,6 +191,9 @@ set t_Co=256                "Set console to display 256 colors
 
 "Hide warnings about colorscheme not being found on first run
 silent! colorscheme Tomorrow-Night
+
+"Change parenethesis matching style
+hi MatchParen cterm=none ctermbg=none ctermfg=red  "Less awful match styling
 
 " */
 
@@ -204,25 +237,6 @@ let g:SuperTabClosePreviewOnPopupClose = 1
 " Reload vimrc when saved
 autocmd! BufWritePost ~/.vimrc source ~/.vimrc
 
-" Prevent Setup() being called twice
-if !exists("*Setup")
-    function! Setup()
-        " Directory required for persisten undo history
-        if !isdirectory(expand("~/.vim/undodir/"))
-            silent !mkdir ~/.vim/undodir/
-        endif
-
-        " Install/Update plugins
-        BundleInstall!
-
-        " Close installer buffer when complete
-        bdelete "[Vundle] installer"
-
-        " Reload vimrc
-        source ~/.vimrc
-    endfunction
-endif
-
 if !exists("*MoveCurTab")
     function MoveCurTab(value)
       let move = a:value - 1
@@ -233,24 +247,3 @@ if !exists("*MoveCurTab")
       exe 'tabmove '.move_to
     endfunction
 endif
-
-" Generate ctags if a django project is detected
-function! GenerateDjangoCTags()
-    let DJANGO_ROOT_DIR = findfile('django-admin', '.;$HOME')
-    if DJANGO_ROOT_DIR == ""
-        let DJANGO_ROOT_DIR = findfile('manage.py', '.;$HOME')
-    endif
-    if DJANGO_ROOT_DIR != ""
-        let DJANGO_ROOT_DIR = substitute(DJANGO_ROOT_DIR, "/[^/]*$", "", "")
-        if !filereadable(DJANGO_ROOT_DIR . "/tags")
-            exe "cd " . DJANGO_ROOT_DIR
-            silent! exec "r!ctags --python-kinds=-i -R 2> /dev/null"
-        endif
-    endif
-endfunction
-
-" Generate ctags
-call GenerateDjangoCTags()
-set tags=tags;/
-
-" */
